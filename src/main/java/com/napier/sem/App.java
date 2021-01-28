@@ -9,8 +9,8 @@ public class App
 {
     public static void main(String[] args)
     {
-        // Connect to MongoDB on local system - port 27000
-        MongoClient mongoClient = new MongoClient("localhost", 27000);
+        // Connect to MongoDB
+        MongoClient mongoClient = new MongoClient("mongo-dbserver");
         // Get a database - will create when we use it
         MongoDatabase database = mongoClient.getDatabase("myDB");
         // Get a collection from the database
