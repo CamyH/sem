@@ -10,7 +10,7 @@ public class App
     public static void main(String[] args)
     {
         // Connect to MongoDB
-        MongoClient mongoClient = new MongoClient("mongoDB");
+        MongoClient mongoClient = new MongoClient("mongo-dbserver");
         // Get a database - will create when we use it
         MongoDatabase database = mongoClient.getDatabase("myDB");
         // Get a collection from the database
