@@ -10,7 +10,7 @@ public class App
     public static void main(String[] args)
     {
         // Connect to MongoDB
-        MongoClient mongoClient = new MongoClient("mongo-dbserver");
+        MongoClient mongoClient = new MongoClient("mongoDB");
         // Get a database - will create when we use it
         MongoDatabase database = mongoClient.getDatabase("myDB");
         // Get a collection from the database
@@ -19,7 +19,7 @@ public class App
         Document doc = new Document("Name", "Cameron Hunt")
                 .append("Class", "Software Engineering Methods")
                 .append("Year", "2021")
-                .append("result", new Document("CW", 100).append("Exam", 100));
+                .append("Result", new Document("CW", 100).append("Exam", 100));
         // Add document to collection
         collection.insertOne(doc);
 
