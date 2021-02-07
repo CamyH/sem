@@ -18,6 +18,11 @@ public class App
         // Connect to Database
         a.connect();
 
+        // Get Employee
+        Employee emp = a.getEmployee(255530, 9999-01-01);
+        //Display results
+        a.displayEmployee(emp);
+
         // Disconnect from Database
         a.disconnect();
     }
@@ -73,16 +78,21 @@ public class App
     }
 
     // Get Employee Data
-    public Employee getEmployee(int ID)
+    public Employee getEmployee(int ID, int date)
     {
         try
         {
             // Create an SQL statement
             Statement statement = con.createStatement();
             // Create string for SQL statement
-            String strSelect = "SELECT emp_no, first_name, last_name "
+            String strSelect = "SELECT emp_no, first_name, last_name, titles.title, salaries.salary, departments.dept_name, dept_manager.emp_no "
                     + "FROM employees "
-                    + "WHERE emp_no = " + ID;
+                    + "JOIN titles ON (employees.emp_no=titles.emp_no) "
+                    + "JOIN salaries ON (employees.emp_no=salaries.emp_no) "
+                    + "JOIN dept_emp ON (employees.emp_no=dept_emp.emp_no) "
+                    + "JOIN departments ON (dept_emp.dept_no=departments.dept_no) "
+                    + "JOIN dept_manager ON  (employees.emp_no=dept_manager.emp_no) "
+                    + "WHERE employees.emp_no = " + ID + " AND titles.to_date = " + date + " AND salaries.to_date = " + date + " AND dept_manager.to_date = " + date;
             // Execute SQL Statement
             ResultSet result = statement.executeQuery(strSelect);
             // Return new employee if valid
@@ -100,6 +110,22 @@ public class App
             System.out.println(e.getMessage());
             System.out.println("Failed to get employee details");
             return null;
+        }
+    }
+
+    // Display Employee information
+    public void displayEmployee(Employee emp)
+    {
+        if (emp != null)
+        {
+            System.out.println(
+                    emp.emp_no + " "
+                    + emp.first_name + " "
+                    + emp.last_name + "\n"
+                    + emp.title + "\n"
+                    + "Salary: " + emp.salary + "\n"
+                    + emp.dept_name + "\n"
+                    + "Manager: " + emp.manager + "\n");
         }
     }
 
