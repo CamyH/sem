@@ -2,6 +2,10 @@ package com.napier.sem;
 
 import java.sql.*;
 
+/**
+ * Class for connecting to and disconnecting from an SQL Database
+ */
+
 public class App
 {
     // Connection to MySQL Database
@@ -65,6 +69,37 @@ public class App
             {
                 System.out.println("Error closing connection to database");
             }
+        }
+    }
+
+    // Get Employee Data
+    public Employee getEmployee(int ID)
+    {
+        try
+        {
+            // Create an SQL statement
+            Statement statement = con.createStatement();
+            // Create string for SQL statement
+            String strSelect = "SELECT emp_no, first_name, last_name "
+                    + "FROM employees "
+                    + "WHERE emp_no = " + ID;
+            // Execute SQL Statement
+            ResultSet result = statement.executeQuery(strSelect);
+            // Return new employee if valid
+            // Check one is returned
+            if (result.next())
+            {
+                Employee emp = new Employee();
+                emp.emp_no = result.getInt("emp_no");
+                emp.first_name = result.getString("first_name");
+                emp.last_name = result.getString("last_name");
+                return emp;
+            } else
+                return null;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.out.println("Failed to get employee details");
+            return null;
         }
     }
 
