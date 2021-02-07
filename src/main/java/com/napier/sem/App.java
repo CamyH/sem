@@ -4,27 +4,35 @@ import java.sql.*;
 
 public class App
 {
+    // Connection to MySQL Database
+    private Connection con = null;
+
     public static void main(String[] args)
     {
-        try
-        {
+        App a = new App();
+
+        // Connect to Database
+        a.connect();
+
+        // Disconnect from Database
+        a.disconnect();
+    }
+
+    // Connect to MySQL Database
+    public void connect()
+    {
+        try {
             // Load Database driver
             Class.forName("com.mysql.jdbc.Driver");
-        }
-        catch (ClassNotFoundException e)
-        {
+        } catch (ClassNotFoundException e) {
             System.out.println("Could not load SQL driver");
             System.exit(-1);
         }
 
-        // Connection to the database
-        Connection con = null;
         int retries = 100;
-        for (int i = 0; i < retries; ++i)
-        {
+        for (int i = 0; i < retries; ++i) {
             System.out.println("Connecting to database...");
-            try
-            {
+            try {
                 // Wait a bit for db to start
                 Thread.sleep(30000);
                 // Connect to database
@@ -34,18 +42,18 @@ public class App
                 Thread.sleep(10000);
                 // Exit for loop
                 break;
-            }
-            catch (SQLException sqle)
-            {
+            } catch (SQLException sqle) {
                 System.out.println("Failed to connect to database attempt " + Integer.toString(i));
                 System.out.println(sqle.getMessage());
-            }
-            catch (InterruptedException ie)
-            {
+            } catch (InterruptedException ie) {
                 System.out.println("Thread interrupted? Should not happen.");
             }
         }
+    }
 
+    // Disconnect from MySQL Database
+    public void disconnect()
+    {
         if (con != null)
         {
             try
@@ -59,4 +67,5 @@ public class App
             }
         }
     }
+
 }
