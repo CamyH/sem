@@ -19,7 +19,8 @@ public class App
         a.connect();
 
         // Get Employee
-        Employee emp = a.getEmployee(255530, 9999-01-01);
+        String dateString = Integer.toString(9999-01-01);
+        Employee emp = a.getEmployee(255530, dateString);
         //Display results
         a.displayEmployee(emp);
 
@@ -78,7 +79,7 @@ public class App
     }
 
     // Get Employee Data
-    public Employee getEmployee(int ID, int date)
+    public Employee getEmployee(int ID, String date)
     {
         try
         {
@@ -93,6 +94,7 @@ public class App
                     + "JOIN departments ON (dept_emp.dept_no=departments.dept_no) "
                     + "JOIN dept_manager ON  (employees.emp_no=dept_manager.emp_no) "
                     + "WHERE employees.emp_no = " + ID + " AND titles.to_date = " + date + " AND salaries.to_date = " + date + " AND dept_manager.to_date = " + date;
+
             // Execute SQL Statement
             ResultSet result = statement.executeQuery(strSelect);
             // Return new employee if valid
