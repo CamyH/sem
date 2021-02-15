@@ -19,8 +19,7 @@ public class App
         a.connect();
 
         // Get Employee
-        String dateString = Integer.toString(9999-01-01);
-        Employee emp = a.getEmployee(255530, dateString);
+        Employee emp = a.getEmployee(255530);
         //Display results
         a.displayEmployee(emp);
 
@@ -79,7 +78,7 @@ public class App
     }
 
     // Get Employee Data
-    public Employee getEmployee(int ID, String date)
+    public Employee getEmployee(int ID)
     {
         try
         {
@@ -87,13 +86,8 @@ public class App
             Statement statement = con.createStatement();
             // Create string for SQL statement
             String strSelect = "SELECT employees.emp_no, first_name, last_name, titles.title, salaries.salary, departments.dept_name, dept_manager.emp_no "
-                    + "FROM employees "
-                    + "JOIN titles ON (employees.emp_no=titles.emp_no) "
-                    + "JOIN salaries ON (employees.emp_no=salaries.emp_no) "
-                    + "JOIN dept_emp ON (employees.emp_no=dept_emp.emp_no) "
-                    + "JOIN departments ON (dept_emp.dept_no=departments.dept_no) "
-                    + "JOIN dept_manager ON  (employees.emp_no=dept_manager.emp_no) "
-                    + "WHERE employees.emp_no = " + ID + " AND titles.to_date = " + date + " AND salaries.to_date = " + date + " AND dept_manager.to_date = " + date;
+                    + "FROM employees, salaries "
+                    + "WHERE employees.emp_no = salaries.emp_no AND salaries.to_date = '9999-01-01'";
 
             // Execute SQL Statement
             ResultSet result = statement.executeQuery(strSelect);
