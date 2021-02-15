@@ -87,7 +87,7 @@ public class App
             // Create string for SQL statement
             String strSelect = "SELECT employees.emp_no, first_name, last_name, salaries.salary "
                     + "FROM employees, salaries "
-                    + "WHERE employees.emp_no = salaries.emp_no AND employees.emp_no = " + ID + " AND salaries.to_date = '9999-01-01'";
+                    + "WHERE employees.emp_no = salaries.emp_no AND employees.emp_no = " + ID;
 
             // Execute SQL Statement
             ResultSet result = statement.executeQuery(strSelect);
