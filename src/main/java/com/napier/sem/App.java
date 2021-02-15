@@ -85,7 +85,7 @@ public class App
             // Create an SQL statement
             Statement statement = con.createStatement();
             // Create string for SQL statement
-            String strSelect = "SELECT employees.emp_no, first_name, last_name, titles.title, salaries.salary, departments.dept_name, dept_manager.emp_no "
+            String strSelect = "SELECT employees.emp_no, first_name, last_name, salaries.salary "
                     + "FROM employees, salaries "
                     + "WHERE employees.emp_no = salaries.emp_no AND salaries.to_date = '9999-01-01'";
 
