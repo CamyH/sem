@@ -31,7 +31,7 @@ public class App
         // Test the size of the returned data - should be 240124
         System.out.println(employees.size());
         // Print out all employee salaries
-        a.printSalaries(employees);
+        //a.printSalaries(employees);
 
         // Disconnect from Database
         a.disconnect();
