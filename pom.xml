@@ -6,7 +6,7 @@
 
     <groupId>com.napier.sem</groupId>
     <artifactId>seMethods</artifactId>
-    <version>0.1.0.2</version>
+    <version>0.1.0.3</version>
 
     <dependencies>
         <dependency>
@@ -14,11 +14,16 @@
             <artifactId>mongodb-driver</artifactId>
             <version>3.6.4</version>
         </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.44</version>
+        </dependency>
     </dependencies>
 
     <properties>
-        <maven.compiler.source>6</maven.compiler.source>
-        <maven.compiler.target>1.6</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
 
     <build>
