@@ -26,12 +26,17 @@ public class App
         //a.displayEmployee(emp);
 
         // Extract Employee salary information
-        ArrayList<Employee> employees = a.getAllSalaries();
+        //ArrayList<Employee> employees = a.getAllSalaries();
+
+        // Extract Employee salary information by given role
+        ArrayList<Employee> salariesByRole = a.getAllSalariesByRole("Engineer");
 
         // Test the size of the returned data - should be 240124
-        System.out.println(employees.size());
+        //System.out.println(employees.size());
         // Print out all employee salaries
         //a.printSalaries(employees);
+        // Print out all salaries by given role
+        a.printSalaries(salariesByRole);
 
         // Disconnect from Database
         a.disconnect();
@@ -176,6 +181,54 @@ public class App
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             System.out.println("Failed to get Employee salary details.");
+            return null;
+        }
+    }
+
+    /**
+     * Get all salaries by a specified role
+     * @return a list of all employees and salaries by specified role
+     */
+    public ArrayList<Employee> getAllSalariesByRole(String role)
+    {
+        try
+        {
+            // Create string for SQL statement
+            String strSelect =
+                    "SELECT employees.emp_no, employees.first_name, employees.last_name, salaries.salary "
+                            + "FROM employees, salaries, titles "
+                            + "WHERE employees.emp_no = salaries.emp_no "
+                            + "AND employees.emp_no = titles.emp_no "
+                            + "AND salaries.to_date = '9999-01-01' "
+                            + "AND titles.to_date = '9999-01-01' "
+                            + "AND titles.title = ? "
+                            + "ORDER BY employees.emp_no ASC "
+                            + "LIMIT 20;";
+
+            // Create prepared statement with SQL statement
+            PreparedStatement preparedStatement = con.prepareStatement(strSelect);
+            // Set SQL statement ? to role
+            preparedStatement.setString(1, role);
+
+            // Execute SQL statement
+            ResultSet rset = preparedStatement.executeQuery();
+            // Extract employee information
+            ArrayList<Employee> employees = new ArrayList<Employee>();
+            while (rset.next())
+            {
+                Employee emp = new Employee();
+                emp.emp_no = rset.getInt("employees.emp_no");
+                emp.first_name = rset.getString("employees.first_name");
+                emp.last_name = rset.getString("employees.last_name");
+                emp.salary = rset.getInt("salaries.salary");
+                employees.add(emp);
+            }
+            return employees;
+        }
+        catch (Exception e)
+        {
+            System.out.println(e.getMessage());
+            System.out.println("Failed to get the salary details of the role " + role);
             return null;
         }
     }

@@ -1,0 +1,15 @@
+@startuml
+actor HR as "HR Advisor"
+
+rectangle Database
+
+rectangle "HR System" {
+    usecase UC8 as "Delete an employee's details"
+
+    usecase UCa as "Remove employee's details"
+
+    HR - UC8
+    UC8 ..> UCa : include
+    UC8 - Database
+}
+@enduml
