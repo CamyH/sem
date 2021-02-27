@@ -15,7 +15,7 @@ rectangle "HR System" {
     usecase UC8 as "Delete employee details"
     usecase UCa as "Print salaries"
 
-HR - UC1
+    HR - UC1
     DM - UC3
     UC1 .. UC2
     UC2 .. UC4
