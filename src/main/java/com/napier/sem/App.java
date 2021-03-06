@@ -29,14 +29,23 @@ public class App
         //ArrayList<Employee> employees = a.getAllSalaries();
 
         // Extract Employee salary information by given role
-        ArrayList<Employee> salariesByRole = a.getAllSalariesByRole("Engineer");
+        //ArrayList<Employee> salariesByRole = a.getAllSalariesByRole("Engineer");
+
+        // Set Department to find salaries of
+        Department department = a.getDepartment("Sales");
+
+        // Extract all Employee salary information for given department
+        ArrayList<Employee> salariesByDepartment = a.getSalariesByDepartment(department);
 
         // Test the size of the returned data - should be 240124
         //System.out.println(employees.size());
         // Print out all employee salaries
         //a.printSalaries(employees);
         // Print out all salaries by given role
-        a.printSalaries(salariesByRole);
+        //a.printSalaries(salariesByRole);
+
+        // Print out all salaries for given department
+        a.printSalaries(salariesByDepartment);
 
         // Disconnect from Database
         a.disconnect();
@@ -119,8 +128,10 @@ public class App
                 emp.last_name = rset.getString("last_name");
                 emp.title = rset.getString("titles.title");
                 emp.salary = rset.getInt("salaries.salary");
-                emp.dept_name = rset.getString("dp1.dept_name");
-                emp.manager = rset.getString("manager_firstname") + " " + rset.getString("manager_lastname");
+                emp.dept.dept_name = rset.getString("dp1.dept_name");
+                emp.manager = new Employee();
+                emp.manager.first_name  = rset.getString("manager_firstname");
+                emp.manager.last_name = rset.getString("manager_lastname");
                 ;
                 return emp;
             } else
@@ -139,12 +150,12 @@ public class App
         {
             System.out.println(
                     emp.emp_no + " "
-                    + emp.first_name + " "
-                    + emp.last_name + "\n"
-                    + emp.title + "\n"
-                    + "Salary: " + emp.salary + "\n"
-                    + emp.dept_name + "\n"
-                    + "Manager: " + emp.manager + "\n");
+                            + emp.first_name + " "
+                            + emp.last_name + "\n"
+                            + emp.title + "\n"
+                            + "Salary: " + emp.salary + "\n"
+                            + emp.dept.dept_name + "\n"
+                            + "Manager: " + emp.manager.first_name + " " + emp.manager.last_name + "\n");
         }
     }
 
@@ -160,9 +171,9 @@ public class App
             // Create a string for the SQL statement
             String strSelect =
                     " SELECT employees.emp_no, employees.first_name, employees.last_name, salaries.salary "
-                    + " FROM employees, salaries "
-                    + " WHERE employees.emp_no = salaries.emp_no AND salaries.to_date = '9999-01-01' "
-                    + " ORDER BY employees.emp_no ASC";
+                            + " FROM employees, salaries "
+                            + " WHERE employees.emp_no = salaries.emp_no AND salaries.to_date = '9999-01-01' "
+                            + " ORDER BY employees.emp_no ASC";
             // Execute SQL statement
             ResultSet rset = statement.executeQuery(strSelect);
             // Extract employee information
@@ -229,6 +240,67 @@ public class App
         {
             System.out.println(e.getMessage());
             System.out.println("Failed to get the salary details of the role " + role);
+            return null;
+        }
+    }
+
+    /**
+     * Method to return department name
+     * @param dept_name Name of the department
+     * @return Department object
+     */
+    public Department getDepartment(String dept_name) {
+        try {
+            Department dept = new Department();
+            dept.dept_name = dept_name;
+            return dept;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.out.println("Failed to get Department name.");
+            return null;
+        }
+    }
+
+    /**
+     * Method to get all salaries by department given
+     * @param dept Name of the department
+     * @return ArrayList of all employees + salaries of the department in dept
+     */
+    public ArrayList<Employee> getSalariesByDepartment(Department dept) {
+        try{
+            // Create string for SQL statement
+            String strSelect =
+                    "SELECT employees.emp_no, employees.first_name, employees.last_name, salaries.salary " +
+                            "FROM employees, salaries, dept_emp, departments " +
+                            "WHERE employees.emp_no = salaries.emp_no " +
+                            "AND employees.emp_no = dept_emp.emp_no " +
+                            "AND dept_emp.dept_no = departments.dept_no " +
+                            "AND salaries.to_date = '9999-01-01' " +
+                            "AND departments.dept_name = ? " +
+                            "ORDER BY employees.emp_no ASC";
+
+            // Create prepared statement with SQL statement
+            PreparedStatement preparedStatement = con.prepareStatement(strSelect);
+            //set sql statement ? to continent parameter
+            preparedStatement.setString(1, dept.dept_name);
+
+            // Execute SQL statement
+            ResultSet rset = preparedStatement.executeQuery();
+            // Extract employee information
+            ArrayList<Employee> employees = new ArrayList<Employee>();
+            while (rset.next()) {
+                Employee emp = new Employee();
+                emp.emp_no = rset.getInt("employees.emp_no");
+                emp.first_name = rset.getString("employees.first_name");
+                emp.last_name = rset.getString("employees.last_name");
+                emp.salary = rset.getInt("salaries.salary");
+                employees.add(emp);
+            }
+            return employees;
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            System.out.println("Failed to get Employee salary details by department.");
             return null;
         }
     }
