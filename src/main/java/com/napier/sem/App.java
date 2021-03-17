@@ -18,7 +18,7 @@ public class App
         App a = new App();
 
         // Connect to Database
-        a.connect();
+        a.connect("localhost:33060");
 
         // Get Employee
         //Employee emp = a.getEmployee(255530);
@@ -52,11 +52,11 @@ public class App
     }
 
     // Connect to MySQL Database
-    public void connect()
+    public void connect(String location)
     {
         try {
             // Load Database driver
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
         } catch (ClassNotFoundException e) {
             System.out.println("Could not load SQL driver");
             System.exit(-1);
@@ -69,7 +69,7 @@ public class App
                 // Wait a bit for db to start
                 Thread.sleep(30000);
                 // Connect to database
-                con = DriverManager.getConnection("jdbc:mysql://db:3306/employees?useSSL=false", "root", "example");
+                con = DriverManager.getConnection("jdbc:mysql://" + location + "/employees?allowPublicKeyRetrieval=true&useSSL=false", "root", "example");
                 System.out.println("Successfully connected");
                 // Wait
                 Thread.sleep(10000);
