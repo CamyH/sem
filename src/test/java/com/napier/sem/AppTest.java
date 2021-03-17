@@ -61,25 +61,4 @@ public class AppTest
         emp = null;
         app.displayEmployee(emp);
     }
-
-    @Test
-    void displayEmployee()
-    {
-        Department dept = new Department();
-        dept.dept_name = "Sales";
-        Employee manager = new Employee();
-        manager.first_name = "Daniel";
-        manager.last_name = "Test";
-        Employee emp = new Employee();
-        emp.emp_no = 1;
-        emp.first_name = "Cameron";
-        emp.last_name = "Hunt";
-        emp.title = "Engineer";
-        emp.salary = 85000;
-        emp.dept.dept_name = dept.dept_name;
-        emp.manager.first_name = manager.first_name;
-        emp.manager.last_name = manager.last_name;
-
-        app.displayEmployee(emp);
-    }
 }
