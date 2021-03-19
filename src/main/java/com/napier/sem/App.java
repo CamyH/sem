@@ -18,7 +18,10 @@ public class App
         App a = new App();
 
         // Connect to Database
-        a.connect("localhost:33060");
+        if (args.length < 1)
+            a.connect("localhost:33060");
+        else
+            a.connect(args[0]);
 
         // Get Employee
         //Employee emp = a.getEmployee(255530);
@@ -45,7 +48,7 @@ public class App
         //a.printSalaries(salariesByRole);
 
         // Print out all salaries for given department
-        a.printSalaries(salariesByDepartment);
+        //a.printSalaries(salariesByDepartment);
 
         // Disconnect from Database
         a.disconnect();

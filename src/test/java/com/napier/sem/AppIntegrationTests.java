@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class AppIntegrationTest
+public class AppIntegrationTests
 {
     static App app;
 
@@ -26,5 +26,31 @@ public class AppIntegrationTest
         assertEquals(emp.emp_no, 255530);
         assertEquals(emp.first_name, "Ronghao");
         assertEquals(emp.last_name, "Garigliano");
+    }
+
+    @Test
+    void testGetAllSalaries()
+    {
+        ArrayList<Employee> employees = app.getAllSalaries();
+        assertEquals(employees.size(), 240124);
+    }
+
+    @Test
+    void testGetAllSalariesByRole()
+    {
+        //ArrayList<Employee> salaries = app.getAllSalariesByRole("Sales");
+        //assertEquals(salaries.size(), 240124);
+    }
+
+    @Test
+    void testGetDepartment()
+    {
+
+    }
+
+    @Test
+    void testGetSalariesByDepartment()
+    {
+
     }
 }
